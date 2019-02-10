@@ -1,0 +1,56 @@
+
+<!-- Binding to the 'form' in our Component ts file-->
+<form [formGroup]="form">
+  
+  <div class="form-group">  
+    <label for="oldPassword">Old password</label>
+    <input type="password" formControlName="oldPassword" class="form-control"/> 
+    <div
+      *ngIf="oldPassword.touched && oldPassword.invalid"
+      class="alert alert-danger">
+ 
+      <div *ngIf="oldPassword.errors.required">
+          Old password required
+      </div>
+
+      <!-- property is set by the aync validator -->
+      <div *ngIf="oldPassword.errors.inValidOldPassword">
+        Old password Invalid
+      </div>
+    </div>
+  </div>
+
+
+  <div class="form-group">
+      <label for="newPassword">New password</label>
+      <input type="password" formControlName="newPassword" class="form-control"/> 
+      <div
+        *ngIf="newPassword.touched && newPassword.invalid"
+        class="alert alert-danger">
+        <div *ngIf="newPassword.errors.required">
+            New password required
+        </div>
+    </div>
+  </div>
+
+
+  <div class="form-group">  
+      <label for="confirmPassword">Confirm password</label>
+    <input type="password" formControlName="confirmPassword" class="form-control"/> 
+
+    <div
+    *ngIf="confirmPassword.touched && confirmPassword.invalid"
+    class="alert alert-danger">
+      <div *ngIf="confirmPassword.errors.required">
+          Confirm password required
+      </div>
+  </div>
+
+  <div *ngIf="confirmPassword.valid && form.invalid && form.errors && form.errors.passwordsShouldMatch" class="alert alert-danger">
+    Passwords do not match
+  </div>
+
+</div>
+
+  <button class="btn btn-primary">Change Password</button>
+</form>

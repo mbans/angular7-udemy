@@ -1,0 +1,21 @@
+<div class="row">
+  <!-- Takes up 25% of page as using 'col-3'-->
+  <div class="col-3">
+    <product-filter [category]=category></product-filter>
+  </div>
+  
+  <!-- Takes up remaining 75% of page as using 'col' -->  
+  <div class="col">
+    <div class="row" *ngIf="cart$ | async as cart">
+        <ng-container *ngFor="let p of filteredProducts; let i = index" >
+        <div class="col">
+        <product-card [product]="p" [shopping-cart]="cart"></product-card>
+        </div>
+      
+        <!-- Adds a new line break into our grid-->
+        <div *ngIf="(i+1)%2==0" class="w-100"></div>
+        </ng-container>
+      </div>
+  </div>
+</div>
+

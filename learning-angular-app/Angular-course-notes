@@ -1,0 +1,720 @@
+Angular Master class notes
+
+
+main.ts - bootstrap class
+karma.ts - config for karma test config
+package.json -> dependancies
+tsconfig.ts -> settings for TS compilier that will compile from TS to JS
+tslint.json -> static analysis tool for TS
+
+WebPack
+- Tool that bundles, scripts into bundles (runtime, styles,main,vendor) and minifies
+- Auto recompiles on changes
+- Hot module reloading
+- The bundles are referenced in the .html, automatically injected into the page
+
+
+TypeScript Fundamentals
+-----------------------
+- Strong Typed (optional)
+- Compile time errors
+- Superset of Javascript
+- browsers don't understand TS, need to "transpile" to JS
+- 'tsc' used to transpile between JS to TS
+
+Variables
+- In JS 'var' will be scoped to nearest method. Therefore even if var is declared in for loop, will still be available within the method
+- In TS 'let' will scope variable like standard Java 
+- Better to use let rather than var
+
+let a: number;
+let b: boolean;
+let e: number[] = [1,2,3];
+let f: any[] = [1,true,3];
+
+enum Color {Red=0, Blue=1, Green=2};
+let background = Color.Blue;    
+
+
+Key Modules
+-----------
+- Forms
+- Reactive Forms
+- HTTP
+- Router
+
+Components 
+----------
+Component encapsulates (Data, HTML Template, Logic)
+Promotes component based architecture, trying to reuse componentd
+- Every app has at least one component 'App'
+- Components are a tree structure all from App/Root component
+
+Displaying Data and Handling Events
+-----------------------------------
+- Interpolation and Properties
+  <img src = {{ imageUrl }}>   -- string Interpolation 
+  <img [src] = "imageUrl" >    -- property binding
+  The compiler actually converts the sring interpolatin to the property binding. 
+- PropertyBinding - will only work one way, from component -> DOM 
+- Style / Class, inline binding
+
+DOM 
+- tree structure of objects in memory
+- HTML page is parsed into a DOM, this is usually a 1-2 between DOM object and HMTL element and it's attributes
+  Similar not always a DOM object and HTML element 
+  i.e. <td colspan> -- there is no corresponding DOM object 
+- Event Bubbling 
+  - events bubble up the DOM unless we use $event.stopPropogation() within handler
+- binding 
+  - property binding e.g. <input [input]=....> is 1 way from comp to view
+  - should use 'ngModel' directive for 2 way binding <input [{ngMode}]="email" ....>
+ 
+- Pipes 
+ - number of built in pipes available
+ - {{ filename | uppercase}
+ - {{ price | currency:'AUD' }} -- convert to aussie 
+ - {{ aDate | date:'shortDate' }}
+ - custom pipes
+   
+
+
+
+
+
+
+Commands (Angular CLI)
+----------------------
+$ ng generate component or 'ng g c' -- generates component TS files and will auto inject into AppModule
+  - new component files created in their own directory
+$ ng new my-dream-app -- creates new angular app
+$ ng g s <serviceName>
+
+$ npm install jquery@1.9.1 --save
+$ npm install bootstrap --save   // Adding bootstrap as a dependancy, save will add bootstrap as a dependancy in package.json
+
+$ npm install --save-dev @fortawesome/fontawesome-free
+
+
+
+Directives
+----------
+Directives are used to modify the structure of the DOM
+1) Structural directive - add/remove DOM elements (prefeixed with * e.g *ngIf)
+2) Attribute directive - amend the attributes of DOM elements
+
+
+ngIf
+- Element is removed from the DOM, if using large tree use ngIf to simplify DOM.
+- If element is expensive to compute then best to keep in memory rather then removing/adding each time. In which case ngIf is not best option
+- <div *ngIf="courses.length > 0; then coursesList else noCour`ses>
+  <ng-template #coursesList>List of courses</ng-template>
+  <ng-template #noCourses>No courses</ng-template>
+
+The leading '*'
+-  When Angular sees '*' in front of a structural * then it will rewrite content INSIDE an 'ng-template'
+- <div *ngIf="courses.length > 0; then coursesList else noCour`ses>
+  <ng-template #coursesList>List of courses</ng-template>
+  <ng-template #noCourses>No courses</ng-template>
+
+gets rewritten as 
+
+  <ng-template [ngIf]=courses.length > 0>
+    <div>
+        List of courses
+    </div>
+  </ng-template>
+
+  The 'else' part is rewritten by Angular with the ngIf condition inversed
+  <ng-template [ngIf]=!(courses.length > 0)>
+    <div>
+        No Courses
+    </div>
+  </ng-template>
+
+
+
+
+
+ngHide
+- Elements is *not* removed from the DOM
+<div [hidden]="courses.length==0">List of Courses</div>
+
+ngSwitchCase
+- use if we have multiple conditions (ngIf only good for 2 cases)
+
+<div [ngSwitch]="property in our comp">
+    <div *ngSwitchCase="value1">Value 1 selected</div>
+    <div *ngSwitchCase="value2">Value 2 selected</div>
+    <div *ngSwitchDefault="value2">Default</div>
+</div>
+
+ngFor
+- Directive used to render a list of objects within the DOM
+- ngFor has a number of additional exported variables, these include index, even, odd, first, last
+- Below we render the (EVEN) if the row is an even 
+    <li *ngFor let course of courses; index as idx; even as isEven>
+        {{idx}} - {{course.name}} <span *ngIf="isEven">(EVEN)</span>
+    </li>
+
+- Change Detection
+  (DOM Events)  e.g. button click   
+  (AJAX Events)    ---> Triggers (Change Detection)
+  (Timer event)
+  
+   * Whenever a button event or AJAX call occurs it triggers the 'change detection' mechanism in Angular
+   * Detect changes in our model and refresh the corresponding DOM elements i.e. the view associated with that component
+   * Within Angular if we continually fetch content from the server and render on the UI, then this will cause the DOM to 
+     be refreshed each time. By Default Angular tracks elements in DOM by object id. However, if the entries being rendered are
+     identical to the previous we will be refreshing unneccisarilly. 
+   * Can use the 'TrackBy' to indicate to Angular to use a differ
+   * If using simple small list no need to use 'trackBy', if using large list with performance issues then consider using trackBy
+
+    <li *ngFor let course of courses; trackBy: trackCourse>    <!-- notice "trackCourse -->
+        {{course.name}}
+    </li>
+
+    * then in the Component, create the method. Now Angular will track by the course id rather than the Object Id
+
+    trackCourse(index, course) {
+        course ? course.id : undefined
+    }
+
+- ngClass & ngStyle (attribute direct)
+ - This is an attribute directive, used to change the attribute of a DOM element
+ - used to provide conditions for which certain CSS classes are applied to DOM elements
+    <span 
+        [ngClass] = " {
+            'glyphicon-star': isSelected          //glyphicon-star is used if the 'isSelected' value in our Component is true
+            'glyphicon-star-empty': !isSelected
+            }
+
+        [ngStyle] = " {
+            'background' = canSave ? 'blue': 'gray',
+            'color' = canSave ? 'white': 'black',
+        }
+    </span>
+
+
+- Safe Traversal Operator
+ <span>{{task.assignee.name}}</span> 
+ if assignee is NULL then this would cause an error, can use '?' to instruct Angular to handle nulls 
+ <span>{{task.assignee?.name}}</span> 
+
+Custom Directive
+----------------
+
+
+Forms
+---------------------
+
+ngForm
+- Directive that is added to all <form> elements by default, exposes an output property 'ngSubmit'
+<form (ngSubmit)=log()
+
+FormControl extends AbstractControl
+- relates to the control of a given input as part of the form
+
+FormGroup extends AbstractControl
+- Grouping of the FormControls, gives us validation at the form level
+
+FormArray 
+
+
+We use the 'errors' and validation fields on the FormControl/FormGroup to drive what is dispalyed
+
+
+Template Driven
+- using the Angular directives ngForm, ngModel to auto create the FormGroup/FormControl objects to the form 
+
+Reactive Forms 
+- Forms we build ourselves, more control
+- Manually construct th FormGroup, FormControl Components
+
+FormControl
+- Provides us with access to all the validator attributes (part of HTML5)
+- Usefule attributs 'valid', 'pristine', 'pending'
+- Pending is true if we have at least one asynchValidator that is in progress 
+
+validation
+- required
+- ng2-validation lib for custom validation
+- using template variable '#title' allows us to then reference within the ngIf
+
+  <div class="form-group">
+    <label for="title">Title</label>
+    <input #title="ngModel" ngModel name="title" id="title" type="text" class="form-control" required >
+    <div class="alert danger" *ngIf="title.touched && title=invalid"></div>
+  </div>
+
+
+
+
+HTTP 
+-------
+jsonplaceholder.typicode.com -- provides us with fake HTTP serviceName
+
+- Error Handling (Exepceted errors)
+404 - Need to handle 404 Not Found errors
+400 - Bad Request
+
+- Error Handling (Unexpected errors) 
+Server down
+Unhandled expcetion (500)
+Network down
+
+
+ErrorHandler
+- create a global error handler then register it within app module. using 
+    { provide: ErrorHandler, useClass: AppErrorHandler } under the 'providers' 
+- if catch exception, need to rethrow in order for the global handler to be able to handle it
+
+
+
+
+LifeCycle Hooks
+----------------
+Create component
+Render 
+onChange
+
+OnInit interface (@angular/core)
+- contains ngOnit() 
+- this method will be invoked
+
+
+Routing
+--------------
+
+- Route is the link between path -> component
+- Router Outlet 
+- LinksD
+
+- Import RouterModule
+- in app.module.ts
+- ensure more specific routes are at the top, link route to a component
+
+    RouterModule.forRoot([
+      {
+        path: '', 
+        component: HomeComponent
+      },
+      {
+        path: 'followers/:username', 
+        component: GithubProfileComponent
+      },
+      {
+        path: 'followers', 
+        component: GithubFollowersComponent
+      },
+
+Route Outlets
+- <router-outlet></router-outlet> 
+- directive that will load the Component associated with the current Path directly below the <router-outlet> tag
+
+RouterLink 
+- <a routerLink="/posts">Posts</a> 
+- <a routerLinl="['/followers', follower.id]' --> when dealing with dynamic links
+- Used in place of the href, ensures resources downloaded once only 
+
+RouterLinkActive="active current"
+- Sets the nav bar as highlighed for the given link/route
+
+RouterParameters
+- /followers/:id 
+- RouterParameters are used within our component(s) to gain access to the parametrs on the routes/paths 
+-   constructor(private route: ActivatedRoute) { }
+- Route Params are Observables
+
+
+Navigating
+- When we switch between routes/components, they are 'onInit' and 'onDesstroyed' created and destroyed/added and removed from the DOM
+- When using RouteParamters, we will not destroy the component when we are navigating using diffierent params 
+  i.e. followers/1234 and followers/3456 will not result in the followers component bieng reloaded as both are using 
+  the same component
+
+
+Authorisation / Authentication
+------------------------------
+
+JWT 
+- credentials sent to server, authenticated and a JWT token returned. 
+- JWT token encapsulates user credentials and stored in localStorage
+- Further requests then contain the JWT, server checks if token is valid and will return unauthenticated response if not
+
+- Content of web token
+a. header info
+b. payload - json content
+c. digital signiture - this is based on the (a) + (b) + a secret. 
+   - secret known ONLY on the server
+ 
+    These 3 elements will produce a digital signature
+   - This means that if hacker changes the content i.e. to specify "admin=true" then it will result in a different digital signature 
+   - Therefore unless someone knows the 'secret' they cannot reproduce the matching digital signature
+
+- Usage
+a. often we encode properties such as user, entitlements etc into the content JSON. This means we can pass around a JWT
+   and not have to go to the DB every time.
+
+- JWTHelper
+a. lib used for convientient methods to check status of JWT tokens
+
+
+RouteGuard
+----------
+We can create a RouteGuard which implements the CanActivate interface. This contains logic that protects URLs from 
+annonymous users.
+
+    RouterModule.forRoot([
+      { path: '', component: HomeComponent },
+      { path: 'admin', component: AdminComponent, canActivate: [AuthGuard] },
+      { path: 'login', component: LoginComponent },
+      { path: 'no-access', component: NoAccessComponent }
+    ])
+
+We simply register the RouterGuard (here it is called AuthGuard) against the path we want to guard.
+This ensures that the route is secured
+
+Redirecting users after they login
+- user is not logged in and accesses /admin
+- authGuard will retreve the 'admin' redirect to the /login and add 'returnUrl=admin' as a queryParamerter
+  i.e. /login?returnUrl=admin
+- within the loginComponent, if user logs in successfully, we will check if there is a 'retunrUrl' provided if so then we will
+  redirect them to that given route, otherwise the homepage
+
+        if (successfullyLoggedIn) {
+          let returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
+          this.router.navigate([returnUrl || '/']);
+          ....
+        }   
+
+Protecting API Resources
+------------------------
+We always want to pass the JWT from localStorage and add it as an Authorization header in the request.
+The AuthHttp lib (Angular does exactly this for us)
+It acts identically to the standard Http with added functionality as per above
+
+
+
+ Client 
+ ------
+  - hide elements based on loggedIn status
+  - protect routes using RouteGuard
+  - use AuthHttp to pass 'token' to user 
+Server
+------
+  - JWT token passed to the server as a request 
+
+
+DEPLOYMENT
+----------
+- JIT (Just in Time) v Ahead of time Compilation
+- For Prod we do look ahead, i.e. compile up front, this compiles the templates/comp into TypeSript.
+  Will detect any compilation errors upfront.
+
+ng build
+- will build a 'dist' folder
+- bundle.js files are constructed by main.bundle.js files
+- no minification, uglification
+- vendor.bundle.js is about 3MB, as this contains the Angular Compiler 
+
+ng build -- prod
+- The vendor.bundle.js is much smaller 
+- All .html is one long string
+- All descriptive identifiers are minified
+- Creates a hash on the bundle.js files i.e. bundle.82928329832984.js, this prevents js files caching. 
+- The dist file is what should be deployed (this is now production ready)
+
+environments (src/enviro
+nments/environments.ts)
+- Angular will take the relevant file and put in our bundle based on the environment we build with
+- environment specific properties
+- environment.prod.ts, environment.dev.ts etc
+- ng serve --prod  
+  ng serve --environment=prod    -- specify env when running
+- changes in the environment do not have hot-module replacement, therefore changing environment properties 
+  will not be reflected in the app
+
+custom environments 
+- to add custom environments, we update angular-cli.json
+- add new environment here with the corresponding environment
+      "environments": {
+        "dev": "environments/environment.ts",
+        "prod": "environments/environment.prod.ts"
+      }
+
+linting (ng lint)
+- linter is programme performs static analaysis of your consider based on rules
+- tslint popular
+- package.json, where we specify dependancy on tslint
+- tslint.json, this is where we specify our linting rules
+- $ng lint , reports all the ERRORs to report all issues in code
+  $ng lint --fix , fix them up for us
+
+
+linging (vs code)
+- install the linting extension
+- can Ctrl + . will give auto suggestions based on the tslint.json
+
+Github Pages (pages.github.com)
+- webhost for static content, for hosting only the UI (can push web in github.io)
+- perfect for deploying front-end static content only i.e. cannot host server
+- commands to deploy 
+a.. ng build -prod -base-href="https://mbans.github.io/<repo-name> 
+     i.e. https://mbans.github.io/followers-app/followers
+
+b. ngh (this deploys to github pages)  
+     we can add a shortcut for these commands in package.json
+c. In package.json add below under "scripts": 
+    "deploy:gh": "ng build --prod --base-href='https://mbans.github.io/followes-app/' && 'ngh "
+d. $npm run deploy:gh
+
+Firebase (Google console.firebase.google.com)
+- Deploy the backend of web/mobile applications (scalable db, cloud messaging, hosting)
+- NoSQL db
+- a. Log onto console.firebase.google.com
+  b. Create project
+  c. sudo npm i -g firebase-tools
+  d. firebase login (opens browser to log in to)
+  e. firebase init (setting up firebase in our project)
+  f. open firebase.json and set public:dist -- this means the dist will be the deployable artifact to firebase
+  g. $ng build --prod 
+     $firebase deploy
+  can set up custom command for deployment like before
+  h. In package.json add
+      "deploy:firebase": "ng build --prod && firebase deploy"
+  i. $npm run deploy:firebase   
+
+
+(console output)
+Lumar-Macy:deploy-demo lumarmacy1$ firebase deploy
+=== Deploying to 'followers-app-38151'...
+
+i  deploying hosting
+i  hosting[followers-app-38151]: beginning deploy...
+i  hosting[followers-app-38151]: found 13 files in dist
+✔  hosting[followers-app-38151]: file upload complete
+i  hosting[followers-app-38151]: finalizing version...
+✔  hosting[followers-app-38151]: version finalized
+i  hosting[followers-app-38151]: releasing new version...
+✔  hosting[followers-app-38151]: release complete
+✔  Deploy complete!
+Project Console: https://console.firebase.google.com/project/followers-app-38151/overview
+Hosting URL: https://followers-app-38151.firebaseapp.com
+Lumar-Macy:deploy-demo lumarmacy1$ 
+
+
+
+Heroku 
+- $heroku login
+- $heroku create  // this generates a new app with random name
+  * This actually creates a new git repo under the directory
+  * Heroku will auto deploy when we commit 
+  * Beforehand we must make some changes to the below
+    
+  * Heroku will checkout latest out from repo
+  * Install the dependancies
+  * Build the applications
+  * Run the node server
+
+Creating app... done, ⬢ warm-chamber-23710
+https://hidden-savannah-71656.herokuapp.com/ 
+https://git.heroku.com/hidden-savannah-71656.git
+
+- $heroku open -a warm-chamber-23710
+- Move the following dependancies from devDependancies to dependancies
+    "@angular/cli": "1.2.4",
+    "@angular/compiler-cli": "^4.0.0",
+    "typescript": "~2.3.3",
+- Add below to "scripts"
+    "postinstall: ng build --prod"
+- Change 
+    "start": "ng serve",
+to 
+    "start": "node server.js",
+
+//Deploys to the heroku repo -- will trigger a deploy
+- $git push heroku master
+- $heroku open
+
+
+Angular Material
+----------------
+- Reusable UI components (material.angular.io)
+- Built specifically for AngularApps so can be easier to use than bootstrap, as BS is built on top of plain JavaScript
+- Built on Material Design developed by Googole in 2014
+- Not quite as mature as bootstrap
+
+(lots of components for Google style UI)
+
+- creating module:
+$ng g m  <module>
+
+- Themes 
+material.io/color
+
+- CSS Preprocessor 
+These are languagees we write styling in which is then converted into CSS 
+LESS, SAAS and Stylus are CSS preprocessors
+Angular supports SAAS
+
+SAAS (Syntactically Awesome Style Sheet)
+- supports imports, variables, mixin
+
+
+-Themes
+We can use SAAS to define new themes that are used throughout whole signature
+
+- Typography
+Used to determine the text
+fonts.google.com to get link to explicit fonds - Open Sans very popular
+
+Within our styles.css we can include the font
+mat-typography-config
+
+--------------
+Redux
+--------------
+- Library to help manage the state of application
+- used in large/medium applications 
+- normally whne you have multiple components that are not parent-child but still need to be kept in sych (same data can be manipulated in multiple places)
+  i.e. completely independant views that need to be synched
+- Typically we need to update state by sending messages between components, complex
+- Introduced by Facebook
+
+Install
+- mkidir redux-demo
+- cd redux-demo
+- ng init
+- npm install redux ng2-redux --save
+
+
+Flux
+- This is the Architecture to manage application state in a predictable way
+- Redux is a lib giving a solution to this architecture
+
+Benefits
+- based on functional programming
+- easy to test as functinons returning new state
+- easy for undo/redo 
+
+When To Use
+- Independany copies of same data in multiple places
+- Multiple views that need to work with the same data and be in sync
+- Data can be updated by multiple users
+-   
+
+Stores,Actions,Reducers
+- Store, JSObj that store state of the applicaiton
+- Actions, JSObj that represent something that has happened i.e. like events in CQRS
+- Reducer, function that specifies how the state changes in response to an Action (like an action handler)
+  Always returns new state, does not change state
+  Pure functinons
+
+Pure functinons
+- Same Input produces Same output
+- No side effects
+- Never updates state
+
+ 
+PROJECT 
+-------
+
+1. Creating new project (using Angular 7)
+a. ng new 
+b. npm install firebase @angular/fire --save
+
+2. bootstrap
+npm i bootstrap --save
+
+* Create Navbar 
+- copy the navbar code from getbootrap start examples
+- create seperate component for our navbar
+
+3. routes
+- Seperate component for each of the pages in our application
+- ng g c home 
+  ng g c products
+  ng g c check-out etc
+  ng g c admin/admin-products  --- the products the admins can view (under admin dir)
+
+in app.module.ts, register the below import, path with the component
+
+    RouterModule.forRoot([
+      { path: '', component: HomeComponent },
+      { path: 'products', component: ProductsComponent },
+      { path: 'shopping-cart', component: ShoppingCartComponent },
+      { path: 'check-out', component: CheckOutComponent },
+      { path: 'order-success', component: OrderSuccessComponent },
+      { path: 'login', component: LoginComponent },
+
+
+      { path: 'admin/products', component: AdminProductsComponent },
+      { path: 'admin/orders', component: AdminOrdersComponent }
+
+    ])
+
+- register <router-outlet> in the app.comp.html, now looks like the below.
+<bs-navbar></bs-navbar>
+<main role="main" class="container">
+  <router-outlet></router-outlet>
+</main>
+
+
+-- set up our router links
+In our NavBar we register the routes using 'routerLink'
+
+      <li class="nav-item active">
+        <a class="nav-link" routerLink="/">Home  <span class="sr-only">(current)</span></a>
+      </li>
+
+
+- IMPORTANT: 
+- bootstrap uses jQuery to add 'dynamic' features that will manipulate the DOM
+- When building our Angular app we want to rely on Angular to manipulate the DOM, not other libs (such as jQuery). 
+  This will make our app unpredicabel and harder to test, therefore should aim to use ng-bootstrap libs 
+npm install --save @ng-bootstrap/ng-bootstrap
+
+DEPLOYING 
+---------
+a. firebase login
+b. firebase init - associate it with your firebase app
+c. Open firebase.json and set public folder to "dist"
+{
+  "hosting": {
+    "public": "dist",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}
+d. ng build --prod
+e. firebase deploy 
+
+Authentication
+--------------
+- Using FireBase lib
+- We subsribe to the firebase observables, therefore must remember to unsubsribe (using the asyn pipe)
+- use ng-template to implement an if/else 
+
+Route Guards 
+------------
+- Protecting new routes 
+- AuthGuard created and registered against the different routes in app.module.ts
+
+Redirecting User after login
+----------------
+
+Observables
+-----------
+take - used when we want to take one item from the obs, will then auto unsubsribe
+
+
+Questions: 
+1) What is a directive in Angular
+2) How does NG Bootstrap work 
+3) What is the definition of a service
+4) Look up [class.active] in <a>...</a> and how is used, product.component.html
+5) Look at how transactions work in Angular (beyond scop of our course )
