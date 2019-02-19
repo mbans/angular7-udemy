@@ -41,6 +41,7 @@ import { ProductQuantityComponent } from './product-quantity/product-quantity.co
 import { OrderService } from './order.service';
 import { ShoppingCartSummaryComponent } from './shopping-cart-summary/shopping-cart-summary.component';
 import { ShippingFormComponent } from './shipping-form/shipping-form.component';
+import { OrderFormComponent } from './order-form/order-form.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,8 @@ import { ShippingFormComponent } from './shipping-form/shipping-form.component';
     ProductCardComponent,
     ProductQuantityComponent,
     ShoppingCartSummaryComponent,
-    ShippingFormComponent
+    ShippingFormComponent,
+    OrderFormComponent
   ],
   imports: [
     FormsModule,
@@ -104,6 +106,13 @@ import { ShippingFormComponent } from './shipping-form/shipping-form.component';
         component: AdminProductsComponent,
         canActivate : [AuthGuard, AdminAuthGuard]
       },
+
+      {
+        path: 'admin/orders/:id',
+        component: OrderFormComponent,
+        canActivate : [AuthGuard, AdminAuthGuard]
+      },
+
 
       { path: 'admin/orders',
         component: AdminOrdersComponent,

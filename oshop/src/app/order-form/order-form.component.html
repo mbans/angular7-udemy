@@ -1,0 +1,52 @@
+<div class="row">
+    <div class="col-6" *ngIf=order.shipping>
+            <!-- Shipping details-->
+             <form #f="ngForm">
+                    <div class="form-group">
+                      <label for="">Ship to</label>
+                      <input #name="ngModel" 
+                             [ngModel]="order.shipping.name" 
+                             name="order.shipping.name" 
+                             id="name" 
+                             type="text" 
+                             class="form-control" readonly>
+                    </div>
+                     <div class="form-group">
+                      <label for="">Address Line 1</label>
+                      <input  name="addressLine1" [(ngModel)]="order.shipping.addressLine1" type="text"                        class="form-control" readonly>
+                    </div>
+                    <div class="form-group">
+                      <label for="">Address Line 2</label>
+                      <input #addressLine12="ngModel" name="addressLine1" [(ngModel)]="order.shipping.addressLine2" type="text"                        class="form-control" readonly>
+                    </div>
+                    <div class="form-group">
+                      <label for="">City</label>
+                      <input #city="ngModel" name="city" [(ngModel)]="order.shipping.city" type="text" class="form-control" readonly>
+                    </div>  
+            </form>
+    </div>        
+    <div class="col-6">
+
+        <!-- Order details Card-->
+        <div class="card">
+            <div class="card-body">
+            <h5 class="card-title">Order Details</h5>
+                <p class="card-text">Order consists of  {{ order.quantity }} items</p>
+                <ul class="list-group list-group-flush">
+                <li *ngFor="let item of order.items" class="list-group-item">
+                    {{item.quantity}} x {{item.product.title}}
+                    <div class="float-right">
+                    {{ item.totalPrice | currency:'USD':'symbol'}}
+                    </div>
+                </li>
+                <li class="list-group-item font-weight-bold">
+                    Total
+                    <div class="float-right">
+                        {{order.totalPrice | currency:'USD':'symbol' }}
+                    </div>
+                </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

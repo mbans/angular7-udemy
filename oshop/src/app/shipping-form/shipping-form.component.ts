@@ -16,7 +16,7 @@ export class ShippingFormComponent implements OnInit, OnDestroy {
 
   shipping = {};
   userSub: Subscription;
-  userId: string;
+  user: firebase.User;
   @Input('cart') cart: ShoppingCart;
 
   constructor(
@@ -25,7 +25,7 @@ export class ShippingFormComponent implements OnInit, OnDestroy {
     private router: Router) { }
 
   async ngOnInit() {
-      this.userSub = this.authService.user$.subscribe(user => this.userId = user.uid);
+      this.userSub = this.authService.user$.subscribe(user => this.user = user);
   }
 
   ngOnDestroy() {
@@ -42,6 +42,6 @@ export class ShippingFormComponent implements OnInit, OnDestroy {
    * Generates the order from the items in the cart
    */
   private createOrder() {
-    const o = new Order(this.userId, this.shipping, this.cart);
+    return new Order(this.user.uid, this.user.displayName, this.shipping, this.cart);
   }
 }

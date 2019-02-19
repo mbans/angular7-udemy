@@ -711,6 +711,7 @@ Observables
 -----------
 take - used when we want to take one item from the obs, will then auto unsubsribe
 
+Glyphicons replacement  - use font-awesome (npm i font-awesome --save)
 
 Questions: 
 1) What is a directive in Angular
@@ -718,3 +719,5 @@ Questions:
 3) What is the definition of a service
 4) Look up [class.active] in <a>...</a> and how is used, product.component.html
 5) Look at how transactions work in Angular (beyond scop of our course )
+6) ngClass directive
+7) Look over Integration tests
