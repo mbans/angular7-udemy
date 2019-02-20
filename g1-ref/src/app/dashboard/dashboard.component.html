@@ -1,0 +1,7 @@
+<!-- This results in the dashboard component's search method being invoked-->
+<app-search-request (newSearch)="setSearchIdentifier($event)"></app-search-request>
+
+<!-- This binds the 'search-result'.searchIdentifier to the same as the dashboads search identifer-->
+<app-search-result [searchIdentifier]="currentSearchIdentifier"></app-search-result>
+
+

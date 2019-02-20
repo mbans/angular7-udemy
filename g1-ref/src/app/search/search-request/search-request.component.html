@@ -9,33 +9,34 @@
 
   <!-- width of card is 500px-->         
   <mat-card fxLayout="column" fxFlex=500px>
-
       <mat-card-title fxLayoutAlign="center">Instrument Search</mat-card-title>
-
       <mat-card-content fxLayoutAlign="center"> 
-
+        
+        <!-- the form -->
         <form fxLayout="row"
               fxLayoutGap="20px"
-              (ngSubmit)=searchForIdentifier(f) 
+              (ngSubmit)=search(f) 
               #f="ngForm">
             
             <mat-form-field>
               <mat-label>Instrument Identifier</mat-label>
-              <input matInput placeholder="Placeholder" value="">
+              <input type="text"
+                     matInput 
+                    placeholder="Placeholder" 
+                    [(ngModel)]="request.code"
+                    name="code"
+                    required> 
             </mat-form-field>  
         
             <mat-form-field>
-              <mat-select placeholder="Identifier Type">
-                <mat-option value="any">Any</mat-option>
-                <mat-option value="cusip">CUSIP</mat-option>
-                <mat-option value="sedol">SEDOL</mat-option>
-                <mat-option value="ric">RIC</mat-option>
-                <mat-option value="isin">ISIN</mat-option>
-                <mat-option value="isin">HSBC_ID</mat-option>
+              <mat-select placeholder="Identifier Type"[(ngModel)]="request.type" name="identType">
+                <mat-option *ngFor="let identType of types" [value]="identType">
+                    {{identType}}
+                </mat-option>
               </mat-select>
             </mat-form-field>
 
-          <button mat-fab>
+          <button mat-fab [disabled]="!f.valid">
             <mat-icon>search</mat-icon>
           </button>
         </form>

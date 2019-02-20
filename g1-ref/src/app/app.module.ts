@@ -20,6 +20,7 @@ import { SearchRequestComponent } from './search/search-request/search-request.c
 import { SearchResultComponent } from './search/search-result/search-result.component';
 import { FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     TrainingComponent,
     NavMenuComponent,
     SearchRequestComponent,
-    SearchResultComponent
+    SearchResultComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
