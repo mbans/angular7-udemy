@@ -1,8 +1,3 @@
-
-<!-- <mat-card fxLayout="center" fxFlex="400px">
-  
-  <mat-card-title>Instrument Search</mat-card-title> -->
-
 <section class="instrument-search"
          fxLayout="row" 
          fxLayoutAlign="center"> <!-- Will center on horizontally-->
@@ -23,13 +18,13 @@
               <input type="text"
                      matInput 
                     placeholder="Placeholder" 
-                    [(ngModel)]="request.code"
+                    [(ngModel)]="searchCriteria.code"
                     name="code"
                     required> 
             </mat-form-field>  
         
             <mat-form-field>
-              <mat-select placeholder="Identifier Type"[(ngModel)]="request.type" name="identType">
+              <mat-select placeholder="Identifier Type"[(ngModel)]="searchCriteria.type" name="identType">
                 <mat-option *ngFor="let identType of types" [value]="identType">
                     {{identType}}
                 </mat-option>

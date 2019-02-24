@@ -1,0 +1,49 @@
+
+  <section *ngIf="instrumentRequests.length > 0">
+    <h4>Instrument Request Results {{searchCriteria | json }}</h4>
+    <mat-form-field>
+      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+    </mat-form-field>
+  
+    <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+  
+    <!-- id-->
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef> ID. </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.id}} </mat-cell>
+    </ng-container>
+
+    <!-- code -->
+    <ng-container matColumnDef="code">
+      <mat-header-cell *matHeaderCellDef> Code </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.code}} </mat-cell>
+    </ng-container>
+  
+    <!-- type -->
+    <ng-container matColumnDef="type">
+      <mat-header-cell *matHeaderCellDef> Type </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.type}} </mat-cell>
+    </ng-container>
+  
+    <!-- status-->
+    <ng-container matColumnDef="status">
+      <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.status}} </mat-cell>
+    </ng-container>
+
+    <!-- user-->
+    <ng-container matColumnDef="user">
+        <mat-header-cell *matHeaderCellDef> User </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.user}} </mat-cell>
+    </ng-container>
+
+    <!-- updated-->
+    <ng-container matColumnDef="updated">
+        <mat-header-cell *matHeaderCellDef> Updated </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.updated | date:'fullDate' }} </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+</section>

@@ -16,11 +16,13 @@ import { PastTrainingComponent } from './training/past-training/past-training.co
 import { WelcomeComponent } from './welcome/welcome.component';
 import { TrainingComponent } from './training/training.component';
 import { NavMenuComponent } from './common/nav-menu/nav-menu.component';
-import { SearchRequestComponent } from './search/search-request/search-request.component';
-import { SearchResultComponent } from './search/search-result/search-result.component';
+import { InstrumentRequestSearchComponent } from './search/search-request/search-request.component';
 import { FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { InstrumentRequestsComponent } from './instrument-requests/instrument-requests.component';
+import { InstrumentRequestService } from './instrument-request.service';
+import { NotFoundInstrumentsComponent } from './not-found-instruments/not-found-instruments.component';
 
 @NgModule({
   declarations: [
@@ -33,9 +35,10 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     WelcomeComponent,
     TrainingComponent,
     NavMenuComponent,
-    SearchRequestComponent,
-    SearchResultComponent,
-    DashboardComponent
+    InstrumentRequestSearchComponent,
+    DashboardComponent,
+    InstrumentRequestsComponent,
+    NotFoundInstrumentsComponent
   ],
   imports: [
     BrowserModule,
@@ -45,7 +48,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     FormsModule,
     FlexLayoutModule
   ],
-  providers: [],
+  providers: [InstrumentRequestService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

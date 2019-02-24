@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Identifier } from '../search/search-request/search-request.component';
+import { InstrumentRequestSearchCriteria } from '../model/instrument-request-search-criteria';
 
 @Component({
   selector: 'app-dashboard',
@@ -8,16 +8,18 @@ import { Identifier } from '../search/search-request/search-request.component';
 })
 export class DashboardComponent implements OnInit {
 
-  currentSearchIdentifier: Identifier;
-
+  searchCriteria: InstrumentRequestSearchCriteria;
+  notFoundCriteria: InstrumentRequestSearchCriteria;
   constructor() { }
 
   ngOnInit() {
+    // this.notFoundCriteria = new InstrumentRequestSearchCriteria();
+    this.notFoundCriteria = {code: '', type: '', status: 'NOT FOUND', user: '', from: undefined, to: undefined};
   }
 
   // search(identifier: Identifier) {
-    setSearchIdentifier(identifier: Identifier) {
-      this.currentSearchIdentifier = identifier;
-      // console.log('Current search identifier...' + JSON.stringify(this.currentSearchIdentifier));
+    searchInstrumentRequests(seachCriteria: InstrumentRequestSearchCriteria) {
+      console.log('Dashboard - set new searchCriterial=' + JSON.stringify(seachCriteria));
+      this.searchCriteria = {...seachCriteria} as InstrumentRequestSearchCriteria;
     }
 }

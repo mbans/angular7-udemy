@@ -1,12 +1,9 @@
 import { LoginComponent } from './auth/login/login.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { componentFactoryName } from '@angular/compiler';
-import { SearchRequestComponent } from './search/search-request/search-request.component';
-import { SearchResultComponent } from './search/search-result/search-result.component';
+import { InstrumentRequestSearchComponent } from './search/search-request/search-request.component';
 
-const routes: Routes = [ {path: 'search', component : SearchRequestComponent},
-                         {path: 'result', component : SearchResultComponent},
+const routes: Routes = [ {path: 'search', component : InstrumentRequestSearchComponent},
                          {path: 'login', component : LoginComponent},
                          {path: '/', redirectTo: 'search'}
                        ];

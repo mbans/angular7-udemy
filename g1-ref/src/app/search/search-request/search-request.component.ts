@@ -1,5 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { InstrumentRequestSearchCriteria } from 'src/app/model/instrument-request-search-criteria';
 
 @Component({
   selector: 'app-search-request',
@@ -7,10 +8,10 @@ import { NgForm } from '@angular/forms';
   styleUrls: ['./search-request.component.scss']
 })
 
-export class SearchRequestComponent implements OnInit {
+export class InstrumentRequestSearchComponent implements OnInit {
 
-  @Output() newSearch = new EventEmitter<Identifier>();
-  request: Identifier = {code: '', type: ''};
+  @Output() instrumentSearchRequest = new EventEmitter<InstrumentRequestSearchCriteria>();
+  searchCriteria: InstrumentRequestSearchCriteria = new InstrumentRequestSearchCriteria();
 
   types = ['ALL', 'CUSIP', 'SEDOL', 'HSBC_ID', 'ISIN', 'RIC', 'TICKER'];
 
@@ -20,8 +21,8 @@ export class SearchRequestComponent implements OnInit {
   }
 
   search(form: NgForm) {
-    this.newSearch.emit(this.request);
-    console.log('emitted an event' + JSON.stringify(this.request));
+    this.instrumentSearchRequest.emit(this.searchCriteria);
+    console.log('emitted an event' + JSON.stringify(this.searchCriteria));
   }
 }
 
