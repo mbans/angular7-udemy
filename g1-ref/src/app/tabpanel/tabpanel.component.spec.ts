@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SearchRequestComponent } from './search-request.component';
+import { TabpanelComponent } from './tabpanel.component';
 
-describe('SearchRequestComponent', () => {
-  let component: SearchRequestComponent;
-  let fixture: ComponentFixture<SearchRequestComponent>;
+describe('TabpanelComponent', () => {
+  let component: TabpanelComponent;
+  let fixture: ComponentFixture<TabpanelComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SearchRequestComponent ]
+      declarations: [ TabpanelComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SearchRequestComponent);
+    fixture = TestBed.createComponent(TabpanelComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

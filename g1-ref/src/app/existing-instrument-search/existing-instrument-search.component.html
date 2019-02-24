@@ -1,10 +1,11 @@
 <section class="instrument-search"
          fxLayout="row" 
-         fxLayoutAlign="center"> <!-- Will center on horizontally-->
+         fxLayoutAlign="center"
+         > <!-- Will center on horizontally-->
 
   <!-- width of card is 500px-->         
-  <mat-card fxLayout="column" fxFlex=700px>
-      <mat-card-title fxLayoutAlign="center">Instrument Request Search</mat-card-title>
+  <mat-card fxLayout="column" fxFlex=800px>
+      <mat-card-title fxLayoutAlign="center">G1 Instrument Search</mat-card-title>
       <mat-card-content fxLayoutAlign="center"> 
         
         <!-- the form -->
@@ -30,26 +31,6 @@
                 </mat-option>
               </mat-select>
             </mat-form-field>
-
-            <mat-form-field>
-                <mat-select placeholder="Staus"[(ngModel)]="searchCriteria.status" name="identStatus">
-                  <mat-option *ngFor="let identStatus of statuses" [value]="identStatus">
-                      {{identStatus}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-
-              <mat-form-field>
-                  <input matInput [matDatepicker]="fromPicker" placeholder="From">
-                  <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
-                  <mat-datepicker #fromPicker></mat-datepicker>
-              </mat-form-field>
-
-              <mat-form-field>
-                  <input matInput [matDatepicker]="toPicker" placeholder="To">
-                  <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
-                  <mat-datepicker #toPicker></mat-datepicker>
-                </mat-form-field>
 
           <button mat-fab [disabled]="!f.valid">
             <mat-icon>search</mat-icon>

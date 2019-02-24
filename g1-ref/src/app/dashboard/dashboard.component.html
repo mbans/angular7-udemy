@@ -3,10 +3,9 @@
 <div fxLayout="column" fxLayoutAlign="center"> 
     <app-search-request (instrumentSearchRequest)="searchInstrumentRequests($event)"></app-search-request>
 
-    <div fxLayour="row" fxLayoutAlign="center" fxLayoutGap="20px">
-            <app-instrument-requests [searchCriteria]="searchCriteria" ></app-instrument-requests>
-            <app-instrument-requests [(searchCriteria)]="notFoundCriteria" ></app-instrument-requests>
-
+    <div fxLayout="column" fxLayoutAlign="center" fxLayoutGap="20px">
+         <app-instrument-requests [searchCriteria]="searchCriteria" ></app-instrument-requests>
+        <!-- <app-instrument-requests [(searchCriteria)]="notFoundCriteria" ></app-instrument-requests> -->
     </div>    
 
 </div>

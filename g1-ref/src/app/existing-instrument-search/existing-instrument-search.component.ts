@@ -1,14 +1,13 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { InstrumentRequestSearchCriteria } from '../model/instrument-request-search-criteria';
 import { NgForm } from '@angular/forms';
-import { InstrumentRequestSearchCriteria } from 'src/app/model/instrument-request-search-criteria';
 
 @Component({
-  selector: 'app-search-request',
-  templateUrl: './search-request.component.html',
-  styleUrls: ['./search-request.component.scss']
+  selector: 'app-existing-instrument-search',
+  templateUrl: './existing-instrument-search.component.html',
+  styleUrls: ['./existing-instrument-search.component.scss']
 })
-
-export class SearchRequestComponent implements OnInit {
+export class ExistingInstrumentSearchComponent implements OnInit {
 
   @Output() instrumentSearchRequest = new EventEmitter<InstrumentRequestSearchCriteria>();
   searchCriteria: InstrumentRequestSearchCriteria = new InstrumentRequestSearchCriteria();
@@ -25,9 +24,5 @@ export class SearchRequestComponent implements OnInit {
     this.instrumentSearchRequest.emit(this.searchCriteria);
     console.log('emitted an event' + JSON.stringify(this.searchCriteria));
   }
-}
 
-export interface Identifier {
-  type: string;
-  code: string;
 }

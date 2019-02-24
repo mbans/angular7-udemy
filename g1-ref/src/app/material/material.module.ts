@@ -11,7 +11,10 @@ import {
   MatTableModule,
   MatSortModule,
   MatPaginatorModule,
-  MatBadgeModule
+  MatBadgeModule,
+  MatTabsModule,
+  MatDatepickerModule,
+  MatNativeDateModule
 } from '@angular/material';
 import { NgModule } from '@angular/core';
 
@@ -31,7 +34,10 @@ import { NgModule } from '@angular/core';
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    MatBadgeModule
+    MatBadgeModule,
+    MatTabsModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   exports: [
     MatButtonModule,
@@ -47,7 +53,14 @@ import { NgModule } from '@angular/core';
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    MatBadgeModule
+    MatBadgeModule,
+    MatTabsModule,
+    MatDatepickerModule,
+    MatNativeDateModule
+  ]
+  ,
+  providers: [
+     MatDatepickerModule
   ]
 })
 export class MaterialModule {}

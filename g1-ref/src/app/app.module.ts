@@ -1,5 +1,4 @@
 import { RoutingModule } from './routing/routing.module';
-// import { AppRoutingModule } from './app-routing.module';
 
 import { MaterialModule } from './material/material.module';
 import { BrowserModule } from '@angular/platform-browser';
@@ -16,14 +15,16 @@ import { PastTrainingComponent } from './training/past-training/past-training.co
 import { WelcomeComponent } from './welcome/welcome.component';
 import { TrainingComponent } from './training/training.component';
 import { NavMenuComponent } from './common/nav-menu/nav-menu.component';
-import { InstrumentRequestSearchComponent } from './search/search-request/search-request.component';
+import { SearchRequestComponent } from './search/search-request/search-request.component';
 import { FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { InstrumentRequestsComponent } from './instrument-requests/instrument-requests.component';
 import { InstrumentRequestService } from './instrument-request.service';
 import { NotFoundInstrumentsComponent } from './not-found-instruments/not-found-instruments.component';
-
+import { TabpanelComponent } from './tabpanel/tabpanel.component';
+import { ExistingInstrumentSearchComponent } from './existing-instrument-search/existing-instrument-search.component';
+import { ExistingInstrumentSearchParentComponent } from './existing-instrument-search-parent/existing-instrument-search-parent.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -35,10 +36,14 @@ import { NotFoundInstrumentsComponent } from './not-found-instruments/not-found-
     WelcomeComponent,
     TrainingComponent,
     NavMenuComponent,
-    InstrumentRequestSearchComponent,
+    SearchRequestComponent,
     DashboardComponent,
     InstrumentRequestsComponent,
-    NotFoundInstrumentsComponent
+    NotFoundInstrumentsComponent,
+    SearchRequestComponent,
+    TabpanelComponent,
+    ExistingInstrumentSearchComponent,
+    ExistingInstrumentSearchParentComponent
   ],
   imports: [
     BrowserModule,

@@ -1,6 +1,9 @@
-
+  <section *ngIf="instrumentRequests.length == 0">
+       No results for {{searchCriteria | json }}
+  </section>
+  
   <section *ngIf="instrumentRequests.length > 0">
-    <h4>Instrument Request Results {{searchCriteria | json }}</h4>
+    <!-- <h4>Instrument Request Results {{searchCriteria | json }}</h4> -->
     <mat-form-field>
       <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
     </mat-form-field>
